@@ -14,10 +14,10 @@ container.addEventListener("click", (event) => {
   if (event.target.matches(".number")) {
     const digit = event.target.textContent;
     if (operator) {
-      b += digit;
+      b = addDigit(b, digit);
       updateDisplay();
     } else if (!resultFlag) {
-      a += digit;
+      a = addDigit(a, digit);
       updateDisplay();
     } else {
       a = digit;
@@ -71,6 +71,11 @@ calculateResult.addEventListener("click", (event) => {
     updateDisplay();
   }
 });
+
+function addDigit(current, digit) {
+  if (current === "0") return digit;
+  return current + digit;
+}
 
 function updateDisplay() {
   const string = `${a}${operator}${b}`;
