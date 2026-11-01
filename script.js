@@ -1,3 +1,86 @@
+const container = document.querySelector(".container");
+const display = document.querySelector(".display");
+
+const clearDisplay = document.querySelector("#clear");
+const deleteNumber = document.querySelector("#delete");
+const calculateResult = document.querySelector("#calculate");
+
+let operator = "";
+let a = "",
+  b = "";
+let resultFlag = false;
+
+container.addEventListener("click", (event) => {
+  if (event.target.matches(".number")) {
+    const digit = event.target.textContent;
+    if (operator) {
+      b += digit;
+      updateDisplay();
+    } else if (!resultFlag) {
+      a += digit;
+      updateDisplay();
+    } else {
+      a = digit;
+      updateDisplay();
+      resultFlag = false;
+    }
+  }
+  if (event.target.matches(".operator")) {
+    if (a) {
+      operator = event.target.textContent;
+      updateDisplay();
+    }
+  }
+});
+
+clearDisplay.addEventListener("click", (event) => {
+  a = "";
+  b = "";
+  operator = "";
+  resultFlag = false;
+  updateDisplay();
+});
+
+deleteNumber.addEventListener("click", (event) => {
+  resultFlag = false;
+  if (b) {
+    b = b.slice(0, -1);
+  } else if (operator) {
+    operator = "";
+  } else {
+    a = a.slice(0, -1);
+  }
+  updateDisplay();
+});
+
+calculateResult.addEventListener("click", (event) => {
+  if (operator && a && b) {
+    const answer = operate(operator, +a, +b);
+    if (answer === "Error") {
+      a = "";
+      b = "";
+      operator = "";
+      resultFlag = false;
+      setDisplay("Error");
+      return;
+    }
+    a = String(answer);
+    b = "";
+    operator = "";
+    resultFlag = true;
+    updateDisplay();
+  }
+});
+
+function updateDisplay() {
+  const string = `${a}${operator}${b}`;
+  setDisplay(string);
+}
+
+function setDisplay(text = "") {
+  display.textContent = text;
+}
+
 function add(a, b) {
   return a + b;
 }
@@ -11,23 +94,18 @@ function multiply(a, b) {
 }
 
 function divide(a, b) {
-  return b === 0 ? "Division by zero not possible" : a / b;
+  return b === 0 ? "Error" : a / b;
 }
 
-
-let number1, number2;
 function operate(operator, a, b) {
   switch (operator) {
     case "+":
       return add(a, b);
     case "-":
       return subtract(a, b);
-
-    case "*":
+    case "x":
       return multiply(a, b);
-
-    case "/":
+    case "÷":
       return divide(a, b);
   }
 }
-
