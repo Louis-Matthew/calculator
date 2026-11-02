@@ -27,6 +27,12 @@ container.addEventListener("click", (event) => {
   }
   if (event.target.matches(".operator")) {
     if (a) {
+      if (operator && b) {
+        const worked = calculate();
+        if (!worked) return;
+        updateDisplay();
+      }
+
       operator = event.target.textContent;
       updateDisplay();
     }
@@ -54,23 +60,28 @@ deleteNumber.addEventListener("click", (event) => {
 });
 
 calculateResult.addEventListener("click", (event) => {
-  if (operator && a && b) {
-    const answer = operate(operator, +a, +b);
-    if (answer === "Error") {
-      a = "";
-      b = "";
-      operator = "";
-      resultFlag = false;
-      setDisplay("Error");
-      return;
-    }
-    a = String(answer);
+  calculate();
+});
+
+function calculate() {
+  if (!(operator && a && b)) return false;
+
+  const answer = operate(operator, +a, +b);
+  if (answer === "Error") {
+    a = "";
     b = "";
     operator = "";
-    resultFlag = true;
-    updateDisplay();
+    resultFlag = false;
+    setDisplay("Error");
+    return false;
   }
-});
+  a = String(answer);
+  b = "";
+  operator = "";
+  resultFlag = true;
+  updateDisplay();
+  return true;
+}
 
 function addDigit(current, digit) {
   if (current === "0") return digit;
