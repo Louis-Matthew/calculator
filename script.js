@@ -30,7 +30,6 @@ container.addEventListener("click", (event) => {
       if (operator && b) {
         const worked = calculate();
         if (!worked) return;
-        updateDisplay();
       }
 
       operator = event.target.textContent;
@@ -75,7 +74,8 @@ function calculate() {
     setDisplay("Error");
     return false;
   }
-  a = String(answer);
+  a = Number(answer.toFixed(8));
+  a = String(a)
   b = "";
   operator = "";
   resultFlag = true;
