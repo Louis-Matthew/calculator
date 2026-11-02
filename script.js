@@ -20,7 +20,7 @@ container.addEventListener("click", (event) => {
       a = addDigit(a, digit);
       updateDisplay();
     } else {
-      a = digit;
+      a = addDigit("",digit);
       updateDisplay();
       resultFlag = false;
     }
@@ -75,7 +75,7 @@ function calculate() {
     return false;
   }
   a = Number(answer.toFixed(8));
-  a = String(a)
+  a = String(a);
   b = "";
   operator = "";
   resultFlag = true;
@@ -84,6 +84,11 @@ function calculate() {
 }
 
 function addDigit(current, digit) {
+  if (digit === ".") {
+    if (current === "") return "0.";
+    if (current.includes(".")) return current;
+    return current + ".";
+  }
   if (current === "0") return digit;
   return current + digit;
 }
