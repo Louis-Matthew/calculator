@@ -20,7 +20,7 @@ container.addEventListener("click", (event) => {
       a = addDigit(a, digit);
       updateDisplay();
     } else {
-      a = addDigit("",digit);
+      a = addDigit("", digit);
       updateDisplay();
       resultFlag = false;
     }
@@ -61,6 +61,35 @@ deleteNumber.addEventListener("click", (event) => {
 calculateResult.addEventListener("click", (event) => {
   calculate();
 });
+
+const keyMap = {
+  "+": "add",
+  "-": "subtract",
+  "*": "multiply",
+  "/": "divide",
+  ".": "decimal",
+  "=": "calculate",
+  Enter: "calculate",
+  Backspace: "delete",
+  Escape: "clear",
+};
+
+document.addEventListener("keydown",(event)=>{
+  if(event.ctrlKey || event.metaKey || event.altKey) return;
+
+  let id;
+  if("0123456789".includes(event.key)){
+    id = event.key;
+  }
+  else{
+    id = keyMap[event.key]
+  }
+
+  if(!id) return;
+
+  event.preventDefault();
+  document.getElementById(id).click();
+})
 
 function calculate() {
   if (!(operator && a && b)) return false;
